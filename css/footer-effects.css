@@ -1,0 +1,286 @@
+/* ==========================================================================
+   FOOTER EFFECTS: START  (pairs with js/footer-effects.js)
+   Load AFTER styles.css and scroll-effects.css
+   ========================================================================== */
+
+/* ---- Pointer wave canvas (ripples + glow under the cursor) ---- */
+.site-footer .ft-wave {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---- Floating 3D shapes in the footer (reuses .fx-* shape styles) ---- */
+.site-footer .fx3d--footer .fx-shape {
+  opacity: 0.9;
+  animation: ft-bob 6s ease-in-out infinite alternate;
+}
+
+.site-footer .fx3d--footer .fx-inner {
+  animation: ft-spin 22s linear infinite;
+}
+
+.site-footer .fx3d--footer .fx-shape:nth-child(2) {
+  animation-duration: 8s;
+}
+
+.site-footer .fx3d--footer .fx-shape:nth-child(2) .fx-inner {
+  animation-duration: 30s;
+  animation-direction: reverse;
+}
+
+@keyframes ft-spin {
+  from {
+    transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(380deg) rotateY(360deg) rotateZ(40deg);
+  }
+}
+
+@keyframes ft-bob {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -22px;
+  }
+}
+
+/* ---- Logo: magnetic + glow ---- */
+.site-footer .site-footer-logo {
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.site-footer .site-footer-logo img {
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.4s ease;
+}
+
+.site-footer .site-footer-logo:hover img {
+  transform: perspective(600px) rotateY(14deg) rotateX(-6deg) scale(1.08);
+  filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(0, 180, 255, 0.75));
+}
+
+/* ---- Social icons: lift, spin icon, gradient fill, pulse ring, tooltip ---- */
+.site-footer .site-footer-social {
+  gap: 12px;
+}
+
+.site-footer .site-footer-social a {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* gradient fill that fades in on hover (sits under the icon) */
+.site-footer .site-footer-social a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2454ff, #8b3dff 55%, #00b4ff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.site-footer .site-footer-social a i {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+/* tooltip from aria-label */
+.site-footer .site-footer-social a::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #fff;
+  color: #000519;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.site-footer .site-footer-social a:hover,
+.site-footer .site-footer-social a:focus-visible {
+  color: #fff;
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) translateY(-8px)
+    scale(1.18);
+  box-shadow: 0 10px 24px rgba(36, 84, 255, 0.55);
+  animation: ft-pulse 1.3s ease-out infinite;
+  outline: none;
+}
+
+.site-footer .site-footer-social a:hover::before,
+.site-footer .site-footer-social a:focus-visible::before {
+  opacity: 1;
+}
+
+.site-footer .site-footer-social a:hover i,
+.site-footer .site-footer-social a:focus-visible i {
+  transform: rotateY(360deg);
+}
+
+.site-footer .site-footer-social a:hover::after,
+.site-footer .site-footer-social a:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes ft-pulse {
+  0% {
+    box-shadow:
+      0 10px 24px rgba(36, 84, 255, 0.55),
+      0 0 0 0 rgba(0, 180, 255, 0.55);
+  }
+  100% {
+    box-shadow:
+      0 10px 24px rgba(36, 84, 255, 0.55),
+      0 0 0 16px rgba(0, 180, 255, 0);
+  }
+}
+
+/* ---- Column 3D tilt + glare (driven by JS variables) ---- */
+@media (hover: hover) and (pointer: fine) {
+  .site-footer-column {
+    position: relative;
+    transform: perspective(900px) rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+  }
+
+  .site-footer-column::after {
+    content: "";
+    position: absolute;
+    inset: -8px 0;
+    border-radius: 18px;
+    background: radial-gradient(
+      260px circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(0, 180, 255, 0.14),
+      transparent 60%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .site-footer-column:hover::after {
+    opacity: 1;
+  }
+
+  .site-footer-column h3 {
+    transform: translateZ(28px);
+  }
+}
+
+/* ---- List items / links: 3D slide, glowing bullet, gradient underline ---- */
+.site-footer-col-grid ul {
+  perspective: 700px;
+}
+
+.site-footer-col-grid li {
+  position: relative;
+  align-self: flex-start; /* shrink to text so the underline fits the label */
+  transform-origin: left center;
+  transition:
+    color 0.25s ease,
+    text-shadow 0.25s ease,
+    transform 0.4s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.site-footer-col-grid li::before {
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.site-footer-col-grid li::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: linear-gradient(90deg, #2454ff, #8b3dff, #00b4ff);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+/* real links inside list items (if you convert li text to <a>) */
+.site-footer li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-footer-col-grid li:hover,
+.site-footer-col-grid li:focus-within {
+  color: #fff;
+  text-shadow: 0 0 14px rgba(0, 180, 255, 0.55);
+}
+
+.site-footer-col-grid li:hover::before,
+.site-footer-col-grid li:focus-within::before {
+  transform: scale(1.5);
+  border-color: #00b4ff;
+  background: #00b4ff;
+  box-shadow: 0 0 10px rgba(0, 180, 255, 0.9);
+}
+
+.site-footer-col-grid li:hover::after,
+.site-footer-col-grid li:focus-within::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer-col-grid li:hover {
+    transform: translate3d(10px, 0, 14px) rotateY(-9deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .site-footer .fx3d--footer {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer .ft-wave,
+  .site-footer .fx3d--footer {
+    display: none;
+  }
+
+  .site-footer-column,
+  .site-footer-column h3,
+  .site-footer-col-grid li:hover {
+    transform: none !important;
+  }
+}
+
+/* FOOTER EFFECTS: END */

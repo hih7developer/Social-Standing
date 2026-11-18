@@ -1,0 +1,121 @@
+.consultation-page .contact-section {
+  min-height: calc(100vh - 100px);
+  padding-top: clamp(56px, 7vw, 88px);
+}
+
+.consultation-page .contact-title {
+  font-size: clamp(38px, 5vw, 66px);
+}
+
+.consultation-intro {
+  max-width: 56ch;
+  margin: 18px auto 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+}
+
+.consultation-page .contact-grid {
+  max-width: 1120px;
+  margin-top: 42px;
+}
+
+.consultation-page .contact-photo img {
+  border-radius: 26px;
+}
+
+.consultation-page .contact-stage {
+  min-height: 500px;
+}
+
+.consultation-page .contact-panel {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.consultation-page .contact-close {
+  display: none;
+}
+
+.consultation-page .contact-field {
+  opacity: 1;
+  transform: none;
+}
+
+.consultation-page .contact-field input,
+.consultation-page .contact-field textarea,
+.consultation-page .contact-field select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 54px;
+  padding: 15px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  outline: 0;
+  background: rgba(10, 25, 85, 0.28);
+  color: #fff;
+  font: 500 14px Inter, sans-serif;
+}
+
+.consultation-page .contact-field select {
+  color-scheme: dark;
+}
+
+.consultation-page .contact-field input::placeholder,
+.consultation-page .contact-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.consultation-page .contact-field input:focus,
+.consultation-page .contact-field textarea:focus,
+.consultation-page .contact-field select:focus {
+  border-color: #19e4df;
+  box-shadow: 0 0 0 3px rgba(25, 228, 223, 0.16);
+}
+
+.consultation-page .contact-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.consultation-page .contact-field--wide {
+  grid-column: 1 / -1;
+}
+
+.consultation-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px clamp(20px, 6vw, 80px);
+  color: #65708c;
+  font: 500 13px Inter, sans-serif;
+}
+
+.consultation-footer a {
+  color: #2454ff;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .consultation-page .contact-stage {
+    min-height: 480px;
+  }
+}
+
+@media (max-width: 560px) {
+  .consultation-page .contact-section {
+    padding-bottom: 56px;
+  }
+
+  .consultation-page .contact-stage {
+    min-height: 600px;
+  }
+
+  .consultation-page .contact-field--wide {
+    grid-column: auto;
+  }
+
+  .consultation-footer {
+    flex-direction: column;
+  }
+}
