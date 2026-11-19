@@ -264,12 +264,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .site-footer .fx3d--footer {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .site-footer .ft-wave,
   .site-footer .fx3d--footer {

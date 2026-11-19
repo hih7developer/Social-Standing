@@ -10,10 +10,24 @@
   const dialog = modal.querySelector(".signin-dialog");
   const form = modal.querySelector("#signin-form");
   const feedback = modal.querySelector("#signin-feedback");
+  const signinView = modal.querySelector("#signin-view");
+  const registerView = modal.querySelector("#register-view");
+  const registerForm = modal.querySelector("#register-form");
+  const registerFeedback = modal.querySelector("#register-feedback");
+  const closeButton = modal.querySelector(".signin-close");
   let returnFocus = null;
 
-  function openModal() {
-    returnFocus = document.activeElement;
+  function showView(view) {
+    const isRegister = view === "register";
+    signinView.hidden = isRegister;
+    registerView.hidden = !isRegister;
+    dialog.setAttribute("aria-labelledby", isRegister ? "register-title" : "signin-title");
+    closeButton.setAttribute("aria-label", isRegister ? "Close registration" : "Close sign in");
+  }
+
+  function openModal(view = "signin") {
+    if (!modal.classList.contains("is-open")) returnFocus = document.activeElement;
+    showView(view);
     modal.inert = false;
     modal.setAttribute("aria-hidden", "false");
     modal.classList.add("is-open");
@@ -26,6 +40,7 @@
     modal.setAttribute("aria-hidden", "true");
     modal.inert = true;
     document.body.classList.remove("signin-open");
+    showView("signin");
     if (returnFocus && typeof returnFocus.focus === "function") {
       returnFocus.focus({ preventScroll: true });
     }
@@ -34,7 +49,21 @@
   document.querySelectorAll("[data-open-signin]").forEach((trigger) => {
     trigger.addEventListener("click", (event) => {
       event.preventDefault();
-      openModal();
+      openModal("signin");
+    });
+  });
+  modal.querySelectorAll("[data-open-register]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal("register");
+      registerView.querySelector("input").focus({ preventScroll: true });
+    });
+  });
+  modal.querySelectorAll("[data-open-signin-view]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal("signin");
+      signinView.querySelector("input").focus({ preventScroll: true });
     });
   });
   modal.querySelectorAll("[data-close-signin]").forEach((trigger) => {
@@ -44,7 +73,8 @@
     if (!modal.classList.contains("is-open")) return;
     if (event.key === "Escape") closeModal();
     if (event.key === "Tab") {
-      const focusable = [...dialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')];
+      const focusable = [...dialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')]
+        .filter((element) => !element.closest("[hidden]"));
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -60,8 +90,45 @@
     event.preventDefault();
     feedback.textContent = "Sign in is not connected yet. Please contact your Social Standing representative for account access.";
   });
+  registerForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    registerFeedback.textContent = "Account registration is not connected yet. Please book a consultation to get started.";
+  });
 
-  if (window.location.hash === "#sign-in") openModal();
+  if (window.location.hash === "#sign-in") openModal("signin");
+})();
+
+/* RESPONSIVE NAVIGATION */
+(() => {
+  const nav = document.querySelector(".site-nav");
+  const toggle = nav && nav.querySelector("[data-nav-toggle]");
+  if (!nav || !toggle) return;
+
+  const mobileMenu = window.matchMedia("(max-width: 991px)");
+
+  function closeMenu() {
+    nav.classList.remove("is-menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
+  toggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-menu-open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  nav.querySelectorAll(".pill a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !nav.classList.contains("is-menu-open")) return;
+    closeMenu();
+    toggle.focus();
+  });
+
+  mobileMenu.addEventListener("change", (event) => {
+    if (!event.matches) closeMenu();
+  });
 })();
 
 /* ==========================================================================
@@ -145,6 +212,7 @@
     open = false,
     autoplay = 0;
   var reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var compactPreview = matchMedia("(max-width: 1100px)");
 
   function go(n) {
     i = n;
@@ -174,17 +242,20 @@
     return true;
   }
 
-  tgl.onclick = function () {
-    open = !open;
+  function setOpen(next, focusCard) {
+    open = next;
     st.classList.toggle("open", open);
-    tgl.setAttribute("aria-expanded", open);
+    tgl.setAttribute("aria-expanded", String(open));
     if (open) {
       go(0);
       if (hint) {
         hint.classList.remove("x");
       }
-      card.focus({ preventScroll: true });
+      if (focusCard) {
+        card.focus({ preventScroll: true });
+      }
       if (!reduce) {
+        clearInterval(autoplay);
         autoplay = setInterval(function () {
           go((i + 1) % sl.length);
         }, 4500);
@@ -192,7 +263,28 @@
     } else {
       clearInterval(autoplay);
     }
+  }
+
+  tgl.onclick = function () {
+    if (!compactPreview.matches) {
+      setOpen(!open, true);
+    }
   };
+
+  function syncPreviewMode() {
+    if (compactPreview.matches) {
+      setOpen(true, false);
+    } else {
+      setOpen(false, false);
+    }
+  }
+
+  syncPreviewMode();
+  if (compactPreview.addEventListener) {
+    compactPreview.addEventListener("change", syncPreviewMode);
+  } else if (compactPreview.addListener) {
+    compactPreview.addListener(syncPreviewMode);
+  }
 
   card.addEventListener(
     "wheel",
@@ -243,7 +335,7 @@
       e.preventDefault();
       step(-1);
     }
-    if (e.key == "Escape") tgl.click();
+    if (e.key == "Escape" && !compactPreview.matches) tgl.click();
   });
 
   // 3D tilt

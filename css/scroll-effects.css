@@ -143,11 +143,6 @@
 }
 
 /* Small screens: lighter page, no floating shapes */
-@media (max-width: 768px) {
-  .fx3d {
-    display: none;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .fx3d,

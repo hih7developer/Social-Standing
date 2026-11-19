@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/scroll-effects.css" />
     <link rel="stylesheet" href="css/footer-effects.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
 
   <body>
@@ -186,7 +187,20 @@
         </a>
       </div>
       <div class="menu">
-        <div class="pill">
+        <button
+          class="nav-menu-toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="site-menu-links"
+          data-nav-toggle
+        >
+          <span>Menu</span>
+          <span class="nav-menu-icon" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+        </button>
+        <div class="pill" id="site-menu-links">
           <a href="#services">Services</a>
           <a href="#">LinkedIn</a>
           <a href="#">Facebook</a>
@@ -219,52 +233,106 @@
           class="signin-close"
           type="button"
           data-close-signin
-          aria-label="Close sign in"
+          aria-label="Close dialog"
         >
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
         <a class="signin-logo" href="#" aria-label="Social Standing home">
           <img src="./images/bnr_logo.png" alt="Social Standing" />
         </a>
-        <span class="signin-kicker">Welcome back</span>
-        <h2 id="signin-title">Sign in to your account</h2>
-        <p>Access your Social Standing client workspace.</p>
-        <form class="signin-form" id="signin-form">
-          <label>
-            Email address
-            <input
-              type="email"
-              name="email"
-              autocomplete="email"
-              required
-              placeholder="you@lawfirm.com"
-            />
-          </label>
-          <label>
-            Password
-            <input
-              type="password"
-              name="password"
-              autocomplete="current-password"
-              required
-              placeholder="Enter your password"
-            />
-          </label>
-          <button class="btn" type="submit">
-            Sign In
-            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-          </button>
-          <p
-            class="signin-feedback"
-            id="signin-feedback"
-            role="status"
-            aria-live="polite"
-          ></p>
-        </form>
-        <span class="signin-footnote">
-          New to Social Standing?
-          <a href="#">Book a consultation</a>
-        </span>
+        <div class="signin-view" id="signin-view">
+          <span class="signin-kicker">Welcome back</span>
+          <h2 id="signin-title">Sign in to your account</h2>
+          <p>Access your Social Standing client workspace.</p>
+          <form class="signin-form" id="signin-form">
+            <label>
+              Email address
+              <input
+                type="email"
+                name="email"
+                autocomplete="email"
+                required
+                placeholder="you@lawfirm.com"
+              />
+            </label>
+            <label>
+              Password
+              <input
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                required
+                placeholder="Enter your password"
+              />
+            </label>
+            <button class="btn" type="submit">
+              Sign In
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+            <p
+              class="signin-feedback"
+              id="signin-feedback"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+          <span class="signin-footnote">
+            New to Social Standing?
+            <a href="#register" data-open-register>Register now</a>
+          </span>
+        </div>
+        <div class="signin-view" id="register-view" hidden>
+          <span class="signin-kicker">Get started</span>
+          <h2 id="register-title">Register your account</h2>
+          <p>Create an account to get started with Social Standing.</p>
+          <form class="signin-form" id="register-form">
+            <label>
+              Full name
+              <input
+                type="text"
+                name="name"
+                autocomplete="name"
+                required
+                placeholder="Your full name"
+              />
+            </label>
+            <label>
+              Email address
+              <input
+                type="email"
+                name="email"
+                autocomplete="email"
+                required
+                placeholder="you@lawfirm.com"
+              />
+            </label>
+            <label>
+              Password
+              <input
+                type="password"
+                name="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+                placeholder="Create a password"
+              />
+            </label>
+            <button class="btn" type="submit">
+              Register now
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+            <p
+              class="signin-feedback"
+              id="register-feedback"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+          <span class="signin-footnote">
+            Already have an account?
+            <a href="#sign-in" data-open-signin-view>Sign in</a>
+          </span>
+        </div>
       </div>
     </section>
 
